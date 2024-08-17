@@ -1,0 +1,133 @@
+body {
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    background: #e0f7fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #ffffff;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    max-width: 800px;
+    width: 100%;
+}
+
+h1 {
+    color: #2e7d32;
+    text-shadow: 2px 2px #81c784;
+}
+
+.garden {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.plant-pot {
+    width: 100px;
+    height: 150px;
+    background: #8d6e63;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.plant {
+    width: 100%;
+    height: 0;
+    background: #388e3c;
+    border-radius: 0 0 50% 50%;
+    transition: height 1s, background 0.5s;
+    position: absolute;
+    bottom: 0;
+}
+
+.flower {
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: red;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: width 1s, height 1s, background-color 1s;
+}
+
+.controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    margin: 0 5px;
+}
+
+button:hover {
+    background-color: #1b5e20;
+    transform: scale(1.05);
+}
+
+#status {
+    margin-top: 10px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.flower-type {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.flower-type select {
+    padding: 5px;
+    font-size: 1em;
+    border-radius: 5px;
+    border: 1px solid #2e7d32;
+    margin-left: 10px;
+}
+
+.flower-type label {
+    font-size: 1.2em;
+    color: #2e7d32;
+}
+
+.flower-rose {
+    background-color: red;
+    width: 30px;
+    height: 30px;
+}
+
+.flower-sunflower {
+    background-color: yellow;
+    width: 40px;
+    height: 40px;
+}
+
+.flower-orchid {
+    background-color: blue;
+    width: 35px;
+    height: 35px;
+}

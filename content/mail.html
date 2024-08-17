@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mailbox - For Janani</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: url('background-mailbox.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            overflow: hidden;
+        }
+        .container {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 800px;
+            margin: 20px auto;
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 2s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        h1 {
+            color: #ff69b4;
+            margin-bottom: 30px;
+        }
+        .mailbox {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-around;
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .envelope {
+            width: 200px;
+            height: 130px;
+            background: #fff;
+            border: 2px solid #ff69b4;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .envelope:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 60px solid #ff69b4;
+            border-top: 60px solid transparent;
+            border-radius: 10px 10px 0 0;
+            transform: translateY(-50%);
+        }
+        .envelope-content {
+            display: none;
+            padding: 20px;
+            background: #fff;
+            border: 2px solid #ff69b4;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 350px;
+            position: absolute;
+            top: 140%;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: fadeInLetter 1s ease-in-out;
+            z-index: 3;
+        }
+        @keyframes fadeInLetter {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+        .show {
+            display: block;
+        }
+        .letter {
+            padding: 20px;
+            background: #fff;
+            border: 2px solid #ff69b4;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin: 20px auto;
+            text-align: left;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background-color: #ff1493;
+            transform: scale(1.05);
+        }
+        a {
+            display: inline-block;
+            margin: 10px;
+            text-decoration: none;
+            color: #ff4500;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: color 0.3s;
+        }
+        a:hover {
+            color: #ff1493;
+        }
+        .heart-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 105, 180, 0.7);
+            border-radius: 50%;
+            transform: rotate(-45deg);
+            animation: float 7s infinite ease-in-out;
+        }
+        .heart::before,
+        .heart::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 105, 180, 0.7);
+            border-radius: 50%;
+        }
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+        .heart::after {
+            top: 0;
+            left: -10px;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(-45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(-45deg);
+                opacity: 0;
+            }
+        }
+        .quote-carousel {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+            color: #ff69b4;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        @keyframes carousel {
+            0%, 100% { opacity: 1; }
+            33% { opacity: 0; }
+            66% { opacity: 1; }
+        }
+        .quote-carousel p {
+            animation: carousel 9s infinite;
+        }
+        .quote-carousel p:nth-child(2) {
+            animation-delay: 3s;
+        }
+        .quote-carousel p:nth-child(3) {
+            animation-delay: 6s;
+        }
+    </style>
+</head>
+<body>
+    <div class="heart-container">
+        <div class="heart" style="top: 20%; left: 15%; animation-delay: 0s;"></div>
+        <div class="heart" style="top: 40%; left: 45%; animation-delay: 2s;"></div>
+        <div class="heart" style="top: 70%; left: 25%; animation-delay: 4s;"></div>
+        <div class="heart" style="top: 10%; left: 70%; animation-delay: 1s;"></div>
+        <div class="heart" style="top: 50%; left: 85%; animation-delay: 3s;"></div>
+    </div>
+    <div class="container">
+        <h1>Mailbox for Janani</h1>
+        <div class="mailbox">
+            <div class="envelope" onclick="toggleLetter('letter1')"></div>
+            <div id="letter1" class="envelope-content">
+                <div class="letter">
+                    <h2>I'm Sorry</h2>
+                    <p>Dear Janani,</p>
+                    <p>If I’ve ever made you feel terrible, I want you to know that I am truly sorry. You mean the world to me, and it pains me to think of causing you any hurt. Please forgive me, and let’s continue to build wonderful memories together.</p>
+                    <p>With all my love,<br>Prashanth</p>
+                </div>
+            </div>
+            <div class="envelope" onclick="toggleLetter('letter2')"></div>
+            <div id="letter2" class="envelope-content">
+                <div class="letter">
+                    <h2>You Are Beautiful</h2>
+                    <p>Dear Janani,</p>
+                    <p>I want you to know how incredibly beautiful you are, both inside and out. Your kindness, intelligence, and grace inspire me every day. You make the world a better place just by being in it. I am so grateful to have you in my life.</p>
+                    <p>Forever Yours,<br>Prashanth</p>
+                </div>
+            </div>
+        </div>
+        <a href="../index.html"><i class="fas fa-home"></i> Back to Home</a>
+    </div>
+    <div class="quote-carousel">
+        <p>"Love is composed of a single soul inhabiting two bodies." – Aristotle</p>
+        <p>"You are my sun, my moon, and all my stars." – E.E. Cummings</p>
+        <p>"In all the world, there is no heart for me like yours." – Maya Angelou</p>
+    </div>
+    <audio autoplay loop>
+        <source src="romantic-music.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+        function toggleLetter(letterId) {
+            const letter = document.getElementById(letterId);
+            letter.classList.toggle('show');
+        }
+    </script>
+</body>
+</html>

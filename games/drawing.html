@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw & Guess Game</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background: #f7f7f7;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #4A90E2;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .timer {
+            font-size: 1.5em;
+            color: #E94E77;
+        }
+
+        .game-area {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            width: 100%;
+            position: relative;
+        }
+
+        canvas {
+            flex: 1;
+            border: 1px solid #ccc;
+            cursor: crosshair;
+            background: #f4f4f4;
+        }
+
+        .tools {
+            padding: 10px;
+            background: #333;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 10px;
+        }
+
+        .tool-section {
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 8px 12px;
+            background-color: #E94E77;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #d83c65;
+            transform: scale(1.05);
+        }
+
+        .chat-section {
+            padding: 10px;
+            background: #4A90E2;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-basis: 200px;
+            margin-left: 10px;
+        }
+
+        #chatWindow {
+            background: #fff;
+            color: #333;
+            width: 100%;
+            height: 200px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            overflow-y: scroll;
+            padding: 5px;
+        }
+
+        #chatInput {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .leaderboard {
+            padding: 10px;
+            background: #F5A623;
+            color: #fff;
+            flex-basis: 200px;
+            text-align: center;
+            margin-left: 10px;
+        }
+
+        #leaderboardList {
+            list-style: none;
+            padding: 0;
+        }
+
+        #leaderboardList li {
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Draw & Guess</h1>
+            <div class="timer" id="timer">60</div>
+        </div>
+        <div class="game-area">
+            <canvas id="drawingCanvas"></canvas>
+            <div class="tools">
+                <div class="tool-section">
+                    <label for="brushSize">Brush Size:</label>
+                    <input type="range" id="brushSize" min="1" max="10" value="5">
+                </div>
+                <div class="tool-section">
+                    <label for="colorPicker">Color:</label>
+                    <input type="color" id="colorPicker" value="#000000">
+                </div>
+                <button id="clearCanvas">Clear</button>
+                <button id="undo">Undo</button>
+            </div>
+            <div class="chat-section">
+                <div id="chatWindow"></div>
+                <input type="text" id="chatInput" placeholder="Type your guess...">
+                <button id="sendMessage">Send</button>
+            </div>
+        </div>
+        <div class="leaderboard">
+            <h2>Leaderboard</h2>
+            <ul id="leaderboardList">
+                <!-- Player Scores will be populated here -->
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 600;
+        canvas.height = 400;
+
+        let drawing = false;
+        let brushSize = document.getElementById('brushSize').value;
+        let brushColor = document.getElementById('colorPicker').value;
+        let drawnStrokes = [];
+        let currentStroke = [];
+
+        function startDrawing(e) {
+            drawing = true;
+            currentStroke = [{ x: e.offsetX, y: e.offsetY }];
+        }
+
+        function draw(e) {
+            if (!drawing) return;
+            ctx.lineWidth = brushSize;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = brushColor;
+
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX, e.offsetY);
+
+            currentStroke.push({ x: e.offsetX, y: e.offsetY });
+        }
+
+        function stopDrawing() {
+            if (!drawing) return;
+            drawing = false;
+            ctx.beginPath();
+
+            drawnStrokes.push({ color: brushColor, size: brushSize, stroke: currentStroke });
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+
+        document.getElementById('brushSize').addEventListener('change', (e) => {
+            brushSize = e.target.value;
+        });
+
+        document.getElementById('colorPicker').addEventListener('change', (e) => {
+            brushColor = e.target.value;
+        });
+
+        document.getElementById('clearCanvas').addEventListener('click', () => {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawnStrokes = [];
+        });
+
+        document.getElementById('undo').addEventListener('click', () => {
+            drawnStrokes.pop();
+            redrawCanvas();
+        });
+
+        function redrawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawnStrokes.forEach(strokeData => {
+                ctx.strokeStyle = strokeData.color;
+                ctx.lineWidth = strokeData.size;
+                ctx.beginPath();
+                strokeData.stroke.forEach((point, index) => {
+                    if (index === 0) {
+                        ctx.moveTo(point.x, point.y);
+                    } else {
+                        ctx.lineTo(point.x, point.y);
+                    }
+                });
+                ctx.stroke();
+                ctx.beginPath();
+            });
+        }
+
+        // Add more game logic, chat, and multiplayer functionality as needed
+    </script>
+</body>
+</html>

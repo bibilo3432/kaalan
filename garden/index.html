@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Gardening Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Advanced Gardening Game</h1>
+        <div class="flower-type">
+            <label for="flower-select">Choose Your Flower:</label>
+            <select id="flower-select">
+                <option value="rose">Red Rose</option>
+                <option value="sunflower">Yellow Sunflower</option>
+                <option value="orchid">Blue Orchid</option>
+            </select>
+        </div>
+        <div class="garden">
+            <div class="plant-pot">
+                <div id="plant1" class="plant">
+                    <div id="flower1" class="flower"></div>
+                </div>
+            </div>
+            <div class="plant-pot">
+                <div id="plant2" class="plant">
+                    <div id="flower2" class="flower"></div>
+                </div>
+            </div>
+            <div class="plant-pot">
+                <div id="plant3" class="plant">
+                    <div id="flower3" class="flower"></div>
+                </div>
+            </div>
+        </div>
+        <div class="controls">
+            <button onclick="plantSeed()">Plant Seed</button>
+            <button onclick="waterPlants()">Water</button>
+            <button onclick="harvestPlants()">Harvest</button>
+        </div>
+        <div id="status"></div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+
+</html>
